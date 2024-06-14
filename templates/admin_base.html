@@ -1,0 +1,883 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>{% block title %} Ansacad - Teacher - Dashboard {% endblock %}</title>
+    <link rel="shortcut icon" href="{% static 'logo/ansacad 2.jpeg' %}">
+    <link 
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700&display=swap"
+    rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin_style.css' %}">
+
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+
+        <!-- Header Section -->
+
+        {% block header %}
+
+        <div class="header">
+
+            <div class="header-left">
+
+                <a href="{% url 'admin_index' %}" class="logo">
+
+                    <img src="{% static 'logo/ansacad 2.jpeg' %}" alt="Logo"> ANSAR UD DEEN ACADEMY
+
+                </a>
+
+            </div>
+            
+            <div class="menu-toggle">
+            
+                <a href="javascript:void(0);" id="toggle_btn">
+            
+                    <i class="fas fa-bars"></i>
+            
+                </a>
+            
+            </div>
+            
+            <div class="top-nav-search">
+            
+                <form>
+            
+                    <input type="text" class="form-control" placeholder="Search here">
+                    <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+            
+                </form>
+            
+            </div>
+            
+            <a class="mobile_btn" id="mobile_btn">
+            
+                <i class="fas fa-bars"></i>
+            
+            </a>
+            {% comment %} <div class="theme-toggler">
+                <span class="material-icons-sharp active">light_mode</span>
+                <span class="material-icons-sharp">dark_mode</span>
+            </div> {% endcomment %}
+            <ul class="nav user-menu theme-toggler">
+
+                <li class="nav-item dropdown noti-dropdown language-drop me-2">
+                    <a href="#" class="dropdown-toggle nav-link header-nav-list" data-bs-toggle="dropdown">
+                        <img src="{% static 'icons/header-icon-01.svg' %}" alt="">
+                    </a>
+                    <div class="dropdown-menu ">
+                        <div class="noti-content">
+                            <div>
+                                <span class="material-icons-sharp active">light_mode</span>
+                                <span class="material-icons-sharp">dark_mode</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            
+                <li class="nav-item dropdown noti-dropdown me-2">
+            
+                    <a href="#" class="dropdown-toggle nav-link header-nav-list" data-bs-toggle="dropdown">
+            
+                        <img src="{% static 'icons/header-icon-05.svg' %}" alt="">
+            
+                    </a>
+            
+                    <div class="dropdown-menu notifications">
+            
+                        <div class="topnav-dropdown-header">
+            
+                            <span class="notification-title">Notifications</span>
+                            <a href="{% url 'clear_notifications' %}" class="clear-noti"> Clear All </a>
+            
+                        </div>
+            
+                        <div class="noti-content">
+            
+                            <ul class="notification-list">
+            
+                                {% for notification in notifications %}
+            
+                                <li class="notification-message">
+            
+                                    <a href="#">
+            
+                                        <div class="media d-flex">
+            
+                                            <span class="avatar avatar-sm flex-shrink-0">
+            
+                                                <img class="avatar-img rounded-circle" alt="User Image"
+                                                    src="{% static 'img/profiles/admin001.jpg' %}">
+            
+                                            </span>
+        
+                                            <div class="media-body flex-grow-1">
+        
+                                                <p class="noti-details">{{ notification.message }}</p>
+                                                <p class="noti-time"><span class="notification-time">{{
+                                                        notification.created_at }}</span></p>
+                                            </div>
+        
+                                        </div>
+        
+                                    </a>
+        
+                                </li>
+        
+                                {% endfor %}
+        
+                            </ul>
+        
+                        </div>
+        
+                        <div class="topnav-dropdown-footer">
+        
+                            <a href="{% url 'notifications' %}">View all Notifications</a>
+        
+                        </div>
+        
+                    </div>
+        
+                </li>
+        
+                <li class="nav-item zoom-screen me-2">
+        
+                    <a href="#" class="nav-link header-nav-list win-maximize">
+        
+                        <img src="{% static 'icons/header-icon-04.svg' %}" alt="">
+        
+                    </a>
+        
+                </li>
+        
+                <li class="nav-item dropdown has-arrow new-user-menus">
+        
+                    <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+        
+                        <span class="user-img">
+        
+                            <img class="rounded-circle" src="{{ admin.profile_pic.url }}" width="31"
+                                alt="admin-pics">
+        
+                                <div class="user-text">
+        
+                                    <h6 class="user-name mb-0">{{ admin.name }}</h6>
+        
+                                    <p class="text-muted mb-0">ADMIN</p>
+        
+                                </div>
+        
+                        </span>
+        
+                    </a>
+     
+                    <div class="dropdown-menu">
+     
+                        <div class="user-header">
+     
+                            <div class="avatar avatar-sm">
+     
+                                <img src="{{ admin.profile_pic.url }}" alt="User Image"
+                                    class="avatar-img rounded-circle">
+     
+                            </div>
+ 
+                            <div class="user-text">
+ 
+                                <h6 class="user-name mb-0">{{ admin.name }}</h6>
+                                <p class="text-muted mb-0">Admin</p>
+ 
+                            </div>
+ 
+                        </div>
+ 
+                        <a class="dropdown-item" href="{% url 'admin_profile' %}">My Profile</a>
+                        <a class="dropdown-item" href="{% url 'admin_inbox' %}">Inbox</a>
+                        <a class="dropdown-item" href="{% 'login' %}">Logout</a>
+ 
+                    </div>
+ 
+                </li>
+ 
+            </ul>
+ 
+        </div>
+ 
+        {% endblock %}
+
+        <!-- Sidebar Section -->
+ 
+        {% block sidebar %}
+        
+        <div class="sidebar" id="sidebar">
+        
+            <div class="sidebar-inner slimscroll">
+        
+                <div id="sidebar-menu" class="sidebar-menu">
+        
+                    <ul>
+        
+                        <li class="menu-title">
+                            <span>Main Menu</span>
+                        </li>
+
+                        <li class="submenu {% if request.path in ['/admin_index/', '/teacher_dashboard/', '/student_dashboard/'] %}active{% endif %}">
+                            <a href="#">
+                            
+                                <i class="feather-grid" aria-hidden="true"></i> 
+                                <span> Dashboard</span> 
+                                <span class="menu-arrow"></span>
+                            
+                            </a>
+                            
+                            <ul>
+                                <li {% if request.path=='/admin_index/' %}class="active" {% endif %}>
+                                    <a href="{% url 'admin_index' %}">Admin Dashboard</a>
+                                </li>
+                                <li {% if request.path=='/teacher_dashboard/' %}class="active" {% endif %}>
+                                    <a href="{% url 'teacher_dashboard' %}">Teacher Dashboard</a>
+                                </li>
+                                <li {% if request.path=='/student_dashboard/' %}class="active" {% endif %}>
+                                    <a href="{% url 'student_dashboard' %}">Student Dashboard</a>
+                                </li>
+                            </ul>
+                        
+                        </li>
+
+                        <li class="submenu {% if request.path in ['/students/', '/student_details/', '/add_student/', '/edit_student/'] %}active{% endif %}">
+                            
+                            <a href="#">
+                            
+                                <i class="fas fa-graduation-cap" aria-hidden="true"></i> 
+                                <span> Students </span> 
+                                <span class="menu-arrow"></span>
+                            
+                            </a>
+                            
+                            <ul>
+                                <li {% if request.path=='/students/' %}class="active" {% endif %}>
+                                    <a href="{% url 'students' %}">Student List</a>
+                                </li>
+                                <li {% if request.path=='/student_details/' %}class="active" {% endif %}>
+                                    <a href="{% url 'student_details' %}">Student View</a>
+                                </li>
+                                <li {% if request.path=='/add_student/' %}class="active" {% endif %}>
+                                    <a href="{% url 'add_student' %}">Student Add</a>
+                                </li>
+                                <li {% if request.path=='/edit_student/' %}class="active" {% endif %}>
+                                    <a href="{% url 'edit_student' %}">Student Edit</a>
+                                </li>
+                            </ul>
+                        
+                        </li>
+
+                        <li class="submenu {% if request.path in ['/teachers/', '/teacher_details/', '/add_teacher/', '/edit_teacher/'] %}active{% endif %}">
+                            
+                            <a href="#">
+                            
+                                <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i> 
+                                <span> Teachers </span> 
+                                <span class="menu-arrow"></span>
+                            
+                            </a>
+                            
+                            <ul>
+                                <li {% if request.path=='/teachers/' %}class="active" {% endif %}>
+                                    <a href="{% url 'teachers' %}">Teacher List</a>
+                                </li>
+                                <li {% if request.path=='/teacher_details/' %}class="active" {% endif %}>
+                                    <a href="{% url 'teacher_details' %}">Teacher View</a>
+                                </li>
+                                <li {% if request.path=='/add_teacher/' %}class="active" {% endif %}>
+                                    <a href="{% url 'add_teacher' %}">Teacher Add</a>
+                                </li>
+                                <li {% if request.path=='/edit_teacher/' %}class="active" {% endif %}>
+                                    <a href="{% url 'edit_teacher' %}">Teacher Edit</a>
+                                </li>
+                            </ul>
+                        
+                        </li>
+
+                        <li class="submenu {% if request.path in ['/departments/', '/add_department/', '/edit_department/'] %}active{% endif %}">
+                            
+                            <a href="#">
+                            
+                                <i class="fas fa-building" aria-hidden="true"></i> 
+                                <span> Departments </span> 
+                                <span class="menu-arrow"></span>
+                            
+                            </a>
+                            
+                            <ul>
+                                <li {% if request.path=='/departments/' %}class="active" {% endif %}>
+                                    <a href="{% url 'departments' %}">Department List</a>
+                                </li>
+                                <li {% if request.path=='/add_department/' %}class="active" {% endif %}>
+                                    <a href="{% url 'add_department' %}">Department Add</a>
+                                </li>
+                                <li {% if request.path=='/edit_department/' %}class="active" {% endif %}>
+                                    <a href="{% url 'edit_department' %}">Department Edit</a>
+                                </li>
+                            </ul>
+                        
+                        </li>
+
+                        <li class="submenu {% if request.path in ['/subjects/', '/add_subject/', '/edit_subject/'] %}active{% endif %}">
+                            
+                            <a href="#">
+                            
+                                <i class="fas fa-book-reader" aria-hidden="true"></i> 
+                                <span> Subjects </span> 
+                                <span class="menu-arrow"></span>
+                            
+                            </a>
+                            
+                            <ul>
+                                <li {% if request.path=='/subjects/' %}class="active" {% endif %}>
+                                    <a href="{% url 'subjects' %}">Subject List</a>
+                                </li>
+                                <li {% if request.path=='/add_subject/' %}class="active" {% endif %}>
+                                    <a href="{% url 'add_subject' %}">Subject Add</a>
+                                </li>
+                                <li {% if request.path=='/edit_subject/' %}class="active" {% endif %}>
+                                    <a href="{% url 'edit_subject' %}">Subject Edit</a>
+                                </li>
+                            </ul>
+                        
+                        </li>
+
+                        
+
+                        
+                        
+                        
+                        
+                        
+                        
+
+                        <li class="submenu {% if request.path == '/Class Info/' %}active{% endif %}">
+                            <a href="{% url 'class_info' %}">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span> Class Info </span>
+                            </a>
+                        </li>
+                     
+                        
+                        
+                        <li class="menu-title">
+                            <span>Class Management</span>
+                        </li>
+                        <li class="submenu {% if request.path == '/teacher_dashboard/' %}active{% endif %}">
+                            <a href="{% url 'teacher_dashboard' %}">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span> Dashboard </span>
+                            </a>
+                        </li>
+                        <li class="submenu {% if request.path == '/teacher_students/' %}active{% endif %}">
+                            <a href="{% url 'teacher_students' %}">
+                                <i class="fas fa-users"></i>
+                                <span> Students </span>
+                            </a>
+                        </li>
+                        <li class="submenu {% if request.path == '/teacher_document/' %}active{% endif %}">
+                            <a href="{% url 'teacher_document' %}">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                <span> Lecture Document </span>
+                            </a>
+                        </li>
+                        <li class="submenu {% if request.path == '/teacher_video/' %}active{% endif %}">
+                            <a href="{% url 'teacher_video' %}">
+                                <i class="fas fa-clipboard-list"></i>
+                                <span> Lecture Video </span>
+                            </a>
+                        </li>
+                        <li class="submenu {% if request.path == '/teacher_assignment/' %}active{% endif %}">
+                            <a href="{% url 'teacher_assignment' %}">
+                                <i class="fas fa-clipboard-list"></i>
+                                <span> Assignment </span>
+                            </a>
+                        </li>
+                        <li class="submenu {% if request.path == '/teacher_quiz/' %}active{% endif %}">
+                            <a href="{% url 'teacher_quiz' %}">
+                                <i class="fas fa-clipboard-list"></i>
+                                <span> Quizzes </span>
+                            </a>
+                        </li>
+                        <li class="submenu {% if request.path == '/teacher_event/' %}active{% endif %}">
+                            <a href="{% url 'teacher_event' %}">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span> Events </span>
+                            </a>
+                        </li>
+                        <li class="submenu {% if request.path == '/teacher_timetable/' %}active{% endif %}">
+                            <a href="{% url 'teacher_timetable' %}">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span> Time Table </span>
+                            </a>
+                        </li>
+                        <li
+                            class="submenu {% if request.path in ['/teacher_activity_sports/', '/teacher_activity_clubs/', '/teacher_activity_societies/'] %}active{% endif %}">
+                            <a href="#">
+                                <i class="fa fa-diamond"></i>
+                                <span> Extra-curricular Activities </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul>
+                                <li {% if request.path=='/teacher_activity_sports/' %}class="active" {% endif %}><a
+                                        href="{% url 'teacher_activity_sports' %}">Sports</a></li>
+                                <li {% if request.path=='/teacher_activity_clubs/' %}class="active" {% endif %}>
+                                    <a href="{% url 'teacher_activity_clubs' %}">Clubs</a>
+                                </li>
+                                <li {% if request.path=='/teacher_activity_societies/' %}class="active" {% endif %}><a
+                                        href="{% url 'teacher_activity_societies' %}">Societies</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu-title">
+                            <span>Message & Notification</span>
+                        </li>
+                        <li
+                            class="submenu {% if request.path in ['/inbox/', '/compose/', '/view-mail/'] %}active{% endif %}">
+                            <a href="#">
+                                <i class="fa fa-envelope"></i>
+                                <span> Mail</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul>
+                                <li {% if request.path=='/inbox/' %}class="active" {% endif %}><a
+                                        href="inbox.html">Inbox</a></li>
+                                <li {% if request.path=='/compose/' %}class="active" {% endif %}><a
+                                        href="compose.html">Compose</a></li>
+                                <li {% if request.path=='/view-mail/' %}class="active" {% endif %}><a
+                                        href="view-mail.html">View Mail</a></li>
+                            </ul>
+                        </li>
+                        <li
+                            class="submenu {% if request.path in ['/teacher_notification/', '/teacher_notification_all/', '/teacher_notification_add/', '/teacher_notification_edit/', '/teacher_notification_delete/'] %}active{% endif %}">
+                            <a href="#">
+                                <i class="fa fa-bell"></i>
+                                <span> Notification </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul>
+                                <li {% if request.path=='/teacher_notification/' %}class="active" {% endif %}><a
+                                        href="{% url 'teacher_notification' %}">New Notification</a></li>
+                                <li {% if request.path=='/teacher_notification_all/' %}class="active" {% endif %}><a
+                                        href="{% url 'teacher_notification_all' %}">All Notification</a></li>
+                                <li {% if request.path=='/teacher_notification_add/' %}class="active" {% endif %}><a
+                                        href="{% url 'teacher_notification_add' %}">Add Notification</a></li>
+                                <li {% if request.path=='/teacher_notification_edit/' %}class="active" {% endif %}><a
+                                        href="{% url 'teacher_notification_edit' %}">Edit Notification</a>
+                                </li>
+                                <li {% if request.path=='/teacher_notification_delete/' %}class="active" {% endif %}><a
+                                        href="{% url 'teacher_notification_delete' %}">Delete
+                                        Notification</a></li>
+                            </ul>
+                        </li>
+                        <li
+                            class="submenu {% if request.path in ['/chat/', '/group_chat/', '/video_chat/', '/audio_chat/'] %}active{% endif %}">
+                            <a href="#">
+                                <i class="fa fa-comments"></i>
+                                <span> Chat</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul>
+                                <li {% if request.path=='/chat/' %}class="active" {% endif %}><a
+                                        href="chat.html">Chat</a></li>
+                                <li {% if request.path=='/group_chat/' %}class="active" {% endif %}><a
+                                        href="chat.html">Group Chat</a></li>
+                                <li {% if request.path=='/video_chat/' %}class="active" {% endif %}><a
+                                        href="chat.html">Video Chat</a></li>
+                                <li {% if request.path=='/audio_chat/' %}class="active" {% endif %}><a
+                                        href="chat.html">Audio Chat</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu {% if request.path == url 'teacher_report' %}active{% endif %}">
+                            <a href="{% url 'teacher_report' %}">
+                                <i class="fa fa-flag" aria-hidden="true"></i>
+                                <span> Report </span>
+                            </a>
+                        </li>
+                        <li class="submenu {% if request.path == url 'teacher_calendar' %}active{% endif %}">
+                            <a href="{% url 'teacher_calendar' %}">
+                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                <span> Calendar </span>
+                            </a>
+                        </li>
+                        <li
+                            class="submenu {% if request.path in ['/groups/', '/view_group/', '/add_group/', '/edit_group/', '/delete_group/'] %}active{% endif %}">
+                            <a href="#">
+                                <i class="fa fa-comments"></i>
+                                <span> Groups</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul>
+                                <li {% if request.path=='/groups/' %}class="active" {% endif %}><a
+                                        href="groups.html">Groups</a></li>
+                                <li {% if request.path=='/groups/' %}class="active" {% endif %}><a
+                                        href="groups.html">View Groups</a></li>
+                                <li {% if request.path=='/groups/' %}class="active" {% endif %}><a
+                                        href="groups.html">Add Group</a></li>
+                                <li {% if request.path=='/groups/' %}class="active" {% endif %}><a
+                                        href="groups.html">Edit Group</a></li>
+                                <li {% if request.path=='/groups/' %}class="active" {% endif %}><a
+                                        href="groups.html">Delete Group</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu-title">
+                            <span>Management</span>
+                        </li>
+                        <li class="submenu {% if request.path == url 'teacher_tasks' %}active{% endif %}">
+                            <a href="{% url 'teacher_tasks' %}">
+                                <i class="fa fa-tasks" aria-hidden="true"></i>
+                                <span> Tasks </span>
+                            </a>
+                        </li>
+                        <li class="submenu {% if request.path == url 'teacher_contact' %}active{% endif %}">
+                            <a href="{% url 'teacher_contact' %}">
+                                <i class="fa fa-address-book" aria-hidden="true"></i>
+                                <span> Contact </span>
+                            </a>
+                        </li>
+                        <li class="submenu {% if request.path == url 'teacher_notice_board' %}active{% endif %}">
+                            <a href="{% url 'teacher_notice_board' %}">
+                                <i class="fas fa-chalkboard"></i>
+                                <span> Notice Board</span>
+                            </a>
+                        </li>
+                        <li class="submenu {% if request.path == url 'teacher_help' %}active{% endif %}">
+                            <a href="{% url 'teacher_help' %}">
+                                <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                <span> Help </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+                        <li class="menu-title">
+                            <span>Main Menu</span>
+                        </li>
+                        <li class="submenu active">
+                            <a href="#"><i class="feather-grid"></i> <span> Dashboard</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="index.html" class="active">Admin Dashboard</a></li>
+                                <li><a href="teacher-dashboard.html">Teacher Dashboard</a></li>
+                                <li><a href="student-dashboard.html">Student Dashboard</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-graduation-cap"></i> <span> Students</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="students.html">Student List</a></li>
+                                <li><a href="student-details.html">Student View</a></li>
+                                <li><a href="add-student.html">Student Add</a></li>
+                                <li><a href="edit-student.html">Student Edit</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="teachers.html">Teacher List</a></li>
+                                <li><a href="teacher-details.html">Teacher View</a></li>
+                                <li><a href="add-teacher.html">Teacher Add</a></li>
+                                <li><a href="edit-teacher.html">Teacher Edit</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="departments.html">Department List</a></li>
+                                <li><a href="add-department.html">Department Add</a></li>
+                                <li><a href="edit-department.html">Department Edit</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="subjects.html">Subject List</a></li>
+                                <li><a href="add-subject.html">Subject Add</a></li>
+                                <li><a href="edit-subject.html">Subject Edit</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-clipboard"></i> <span> Invoices</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="invoices.html">Invoices List</a></li>
+                                <li><a href="invoice-grid.html">Invoices Grid</a></li>
+                                <li><a href="add-invoice.html">Add Invoices</a></li>
+                                <li><a href="edit-invoice.html">Edit Invoices</a></li>
+                                <li><a href="view-invoice.html">Invoices Details</a></li>
+                                <li><a href="invoices-settings.html">Invoices Settings</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu-title">
+                            <span>Management</span>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Accounts</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="fees-collections.html">Fees Collection</a></li>
+                                <li><a href="expenses.html">Expenses</a></li>
+                                <li><a href="salary.html">Salary</a></li>
+                                <li><a href="add-fees-collection.html">Add Fees</a></li>
+                                <li><a href="add-expenses.html">Add Expenses</a></li>
+                                <li><a href="add-salary.html">Add Salary</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="holiday.html"><i class="fas fa-holly-berry"></i> <span>Holiday</span></a>
+                        </li>
+                        <li>
+                            <a href="fees.html"><i class="fas fa-comment-dollar"></i> <span>Fees</span></a>
+                        </li>
+                        <li>
+                            <a href="exam.html"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
+                        </li>
+                        <li>
+                            <a href="event.html"><i class="fas fa-calendar-day"></i> <span>Events</span></a>
+                        </li>
+                        <li>
+                            <a href="time-table.html"><i class="fas fa-table"></i> <span>Time Table</span></a>
+                        </li>
+                        <li>
+                            <a href="library.html"><i class="fas fa-book"></i> <span>Library</span></a>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-newspaper"></i> <span> Blogs</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul>
+                                <li><a href="blog.html">All Blogs</a></li>
+                                <li><a href="add-blog.html">Add Blog</a></li>
+                                <li><a href="edit-blog.html">Edit Blog</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a>
+                        </li>
+                        <li class="menu-title">
+                            <span>Pages</span>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-shield-alt"></i> <span> Authentication </span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="login.html">Login</a></li>
+                                <li><a href="register.html">Register</a></li>
+                                <li><a href="forgot-password.html">Forgot Password</a></li>
+                                <li><a href="error-404.html">Error Page</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="blank-page.html"><i class="fas fa-file"></i> <span>Blank Page</span></a>
+                        </li>
+                        <li class="menu-title">
+                            <span>Others</span>
+                        </li>
+                        <li>
+                            <a href="sports.html"><i class="fas fa-baseball-ball"></i> <span>Sports</span></a>
+                        </li>
+                        <li>
+                            <a href="hostel.html"><i class="fas fa-hotel"></i> <span>Hostel</span></a>
+                        </li>
+                        <li>
+                            <a href="transport.html"><i class="fas fa-bus"></i> <span>Transport</span></a>
+                        </li>
+                        <li class="menu-title">
+                            <span>UI Interface</span>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fab fa-get-pocket"></i> <span>Base UI </span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="alerts.html">Alerts</a></li>
+                                <li><a href="accordions.html">Accordions</a></li>
+                                <li><a href="avatar.html">Avatar</a></li>
+                                <li><a href="badges.html">Badges</a></li>
+                                <li><a href="buttons.html">Buttons</a></li>
+                                <li><a href="buttongroup.html">Button Group</a></li>
+                                <li><a href="breadcrumbs.html">Breadcrumb</a></li>
+                                <li><a href="cards.html">Cards</a></li>
+                                <li><a href="carousel.html">Carousel</a></li>
+                                <li><a href="dropdowns.html">Dropdowns</a></li>
+                                <li><a href="grid.html">Grid</a></li>
+                                <li><a href="images.html">Images</a></li>
+                                <li><a href="lightbox.html">Lightbox</a></li>
+                                <li><a href="media.html">Media</a></li>
+                                <li><a href="modal.html">Modals</a></li>
+                                <li><a href="offcanvas.html">Offcanvas</a></li>
+                                <li><a href="pagination.html">Pagination</a></li>
+                                <li><a href="popover.html">Popover</a></li>
+                                <li><a href="progress.html">Progress Bars</a></li>
+                                <li><a href="placeholders.html">Placeholders</a></li>
+                                <li><a href="rangeslider.html">Range Slider</a></li>
+                                <li><a href="spinners.html">Spinner</a></li>
+                                <li><a href="sweetalerts.html">Sweet Alerts</a></li>
+                                <li><a href="tab.html">Tabs</a></li>
+                                <li><a href="toastr.html">Toasts</a></li>
+                                <li><a href="tooltip.html">Tooltip</a></li>
+                                <li><a href="typography.html">Typography</a></li>
+                                <li><a href="video.html">Video</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i data-feather="box"></i> <span>Elements </span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="ribbon.html">Ribbon</a></li>
+                                <li><a href="clipboard.html">Clipboard</a></li>
+                                <li><a href="drag-drop.html">Drag & Drop</a></li>
+                                <li><a href="rating.html">Rating</a></li>
+                                <li><a href="text-editor.html">Text Editor</a></li>
+                                <li><a href="counter.html">Counter</a></li>
+                                <li><a href="scrollbar.html">Scrollbar</a></li>
+                                <li><a href="notification.html">Notification</a></li>
+                                <li><a href="stickynote.html">Sticky Note</a></li>
+                                <li><a href="timeline.html">Timeline</a></li>
+                                <li><a href="horizontal-timeline.html">Horizontal Timeline</a></li>
+                                <li><a href="form-wizard.html">Form Wizard</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i data-feather="bar-chart-2"></i> <span> Charts </span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="chart-apex.html">Apex Charts</a></li>
+                                <li><a href="chart-js.html">Chart Js</a></li>
+                                <li><a href="chart-morris.html">Morris Charts</a></li>
+                                <li><a href="chart-flot.html">Flot Charts</a></li>
+                                <li><a href="chart-peity.html">Peity Charts</a></li>
+                                <li><a href="chart-c3.html">C3 Charts</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i data-feather="award"></i> <span> Icons </span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="icon-fontawesome.html">Fontawesome Icons</a></li>
+                                <li><a href="icon-feather.html">Feather Icons</a></li>
+                                <li><a href="icon-ionic.html">Ionic Icons</a></li>
+                                <li><a href="icon-material.html">Material Icons</a></li>
+                                <li><a href="icon-pe7.html">Pe7 Icons</a></li>
+                                <li><a href="icon-simpleline.html">Simpleline Icons</a></li>
+                                <li><a href="icon-themify.html">Themify Icons</a></li>
+                                <li><a href="icon-weather.html">Weather Icons</a></li>
+                                <li><a href="icon-typicon.html">Typicon Icons</a></li>
+                                <li><a href="icon-flag.html">Flag Icons</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-columns"></i> <span> Forms </span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="form-basic-inputs.html">Basic Inputs </a></li>
+                                <li><a href="form-input-groups.html">Input Groups </a></li>
+                                <li><a href="form-horizontal.html">Horizontal Form </a></li>
+                                <li><a href="form-vertical.html"> Vertical Form </a></li>
+                                <li><a href="form-mask.html"> Form Mask </a></li>
+                                <li><a href="form-validation.html"> Form Validation </a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-table"></i> <span> Tables </span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="tables-basic.html">Basic Tables </a></li>
+                                <li><a href="data-tables.html">Data Table </a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="javascript:void(0);"><i class="fas fa-code"></i> <span>Multi Level</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="submenu">
+                                    <a href="javascript:void(0);"> <span>Level 1</span> <span
+                                            class="menu-arrow"></span></a>
+                                    <ul>
+                                        <li><a href="javascript:void(0);"><span>Level 2</span></a></li>
+                                        <li class="submenu">
+                                            <a href="javascript:void(0);"> <span> Level 2</span> <span
+                                                    class="menu-arrow"></span></a>
+                                            <ul>
+                                                <li><a href="javascript:void(0);">Level 3</a></li>
+                                                <li><a href="javascript:void(0);">Level 3</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="javascript:void(0);"> <span>Level 2</span></a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);"> <span>Level 1</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+
+   
+        <!-- Main Content Section -->
+   
+        <div class="page-wrapper">
+   
+            <div class="content container-fluid">
+   
+                {% block content %}
+   
+                <!-- Page-specific content will go here -->
+   
+                {% endblock %}
+   
+            </div>
+   
+        </div>
+
+        <!-- Footer Section -->
+
+        {% block footer %}
+
+        <footer>
+
+            <p>&copy; 2024 Ansacad School Management System. All Rights Reserved.</p>
+
+        </footer>
+
+        {% endblock %}
+
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/script.js' %}"></script>
+<script defer src="{% static 'js/teacher_script.js' %}"></script>
+
+
+</body>
+
+</html>
